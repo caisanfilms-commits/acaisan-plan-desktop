@@ -1,7 +1,8 @@
-# Publica o app para computador quando uma tag de versão é enviada (ex.: v1.0.0-beta.1).
+# Publica o app para computador quando uma tag de versão é enviada (ex.: v1.0.0-beta.2).
 # A versão da tag precisa ser igual ao "version" do package.json.
-# Gera o instalador do Windows numa máquina Windows do GitHub e cria a versão em Releases,
-# com latest.yml (usado pela atualização automática).
+# 1. cria a versão na Releases como rascunho (uma vez só, para os arquivos não caírem em versões duplicadas)
+# 2. gera o instalador do Windows e envia para esse rascunho (com latest.yml, usado pela atualização automática)
+# 3. publica a versão e marca como a mais recente
 name: Publicar app para computador
 
 on:
@@ -11,9 +12,15 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: publicar-${{ github.ref_name }}
+  cancel-in-progress: false
+
 jobs:
   windows:
     runs-on: windows-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,8 +32,15 @@ jobs:
         run: |
           V=$(node -p "require('./package.json').version")
           [ "v$V" = "${GITHUB_REF_NAME}" ] || { echo "Tag ${GITHUB_REF_NAME} diferente da versão v$V do package.json"; exit 1; }
+      - name: Criar o rascunho da versão
+        shell: bash
+        run: |
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || \
+          gh release create "$GITHUB_REF_NAME" --draft --verify-tag --title "${GITHUB_REF_NAME#v}" \
+            --notes "ACAISAN PLAN para computador ${GITHUB_REF_NAME#v} (Windows 10 e 11). Baixe o ACAISAN-PLAN-Setup.exe abaixo."
       - run: npm ci
-      - name: Gerar e publicar o instalador
+      - name: Gerar o instalador e enviar para o rascunho
         run: npx electron-builder --win nsis --x64 --publish always
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publicar a versão
+        shell: bash
+        run: gh release edit "$GITHUB_REF_NAME" --draft=false --latest

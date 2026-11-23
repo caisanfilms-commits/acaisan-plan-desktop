@@ -1,7 +1,7 @@
 {
   "name": "acaisan-plan-desktop",
   "productName": "ACAISAN PLAN",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "ACAISAN PLAN para computador: gestão para quem vive do audiovisual.",
   "author": "ACAISAN PLAN",
   "license": "UNLICENSED",
@@ -73,7 +73,7 @@
         "provider": "github",
         "owner": "caisanfilms-commits",
         "repo": "acaisan-plan-desktop",
-        "releaseType": "release"
+        "releaseType": "draft"
       }
     ]
   },
