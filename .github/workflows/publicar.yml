@@ -1,0 +1,32 @@
+# Publica o app para computador quando uma tag de versão é enviada (ex.: v1.0.0-beta.1).
+# A versão da tag precisa ser igual ao "version" do package.json.
+# Gera o instalador do Windows numa máquina Windows do GitHub e cria a versão em Releases,
+# com latest.yml (usado pela atualização automática).
+name: Publicar app para computador
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Conferir versão
+        shell: bash
+        run: |
+          V=$(node -p "require('./package.json').version")
+          [ "v$V" = "${GITHUB_REF_NAME}" ] || { echo "Tag ${GITHUB_REF_NAME} diferente da versão v$V do package.json"; exit 1; }
+      - run: npm ci
+      - name: Gerar e publicar o instalador
+        run: npx electron-builder --win nsis --x64 --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

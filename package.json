@@ -1,0 +1,83 @@
+{
+  "name": "acaisan-plan-desktop",
+  "productName": "ACAISAN PLAN",
+  "version": "1.0.0-beta.1",
+  "description": "ACAISAN PLAN para computador: gestão para quem vive do audiovisual.",
+  "author": "ACAISAN PLAN",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "smoke": "electron . --ac-smoke",
+    "dist": "electron-builder --win nsis --x64",
+    "dist:dir": "electron-builder --win dir --x64"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.11"
+  },
+  "devDependencies": {
+    "electron": "^45.4.1",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "com.acaisanplan.desktop",
+    "productName": "ACAISAN PLAN",
+    "copyright": "© 2026 ACAISAN PLAN",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload-titlebar.js",
+      "preload-content.js",
+      "shell/**/*",
+      "build/icon.png",
+      "package.json"
+    ],
+    "protocols": [
+      {
+        "name": "ACAISAN PLAN",
+        "schemes": [
+          "acaisanplan"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "artifactName": "ACAISAN-PLAN-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "ACAISAN PLAN",
+      "uninstallDisplayName": "ACAISAN PLAN",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
+      "language": "1046"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "caisanfilms-commits",
+        "repo": "acaisan-plan-desktop",
+        "releaseType": "release"
+      }
+    ]
+  },
+  "allowScripts": {
+    "electron@45.4.1": true
+  }
+}

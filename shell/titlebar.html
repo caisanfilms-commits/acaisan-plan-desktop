@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; style-src 'self'; script-src 'self'">
+<title>ACAISAN PLAN</title>
+<link rel="stylesheet" href="shell.css">
+</head>
+<body class="tb">
+  <div class="tb__brand">
+    <img src="icon.png" alt="" width="22" height="22">
+    <span class="tb__name">ACAISAN <b>PLAN</b></span>
+    <span class="tb__tag">Beta</span>
+  </div>
+  <nav class="tb__nav" aria-label="Navegação">
+    <button type="button" id="back" title="Voltar (Alt + ←)" aria-label="Voltar"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button type="button" id="forward" title="Avançar (Alt + →)" aria-label="Avançar"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+    <button type="button" id="reload" title="Recarregar (Ctrl + R)" aria-label="Recarregar"><svg viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4.5v4.2h-4.2"/></svg></button>
+    <button type="button" id="home" title="Painel (Ctrl + Shift + H)" aria-label="Ir para o Painel"><svg viewBox="0 0 24 24"><path d="M4.5 11 12 4.5l7.5 6.5V19a1 1 0 0 1-1 1h-4.5v-5h-4v5H5.5a1 1 0 0 1-1-1z"/></svg></button>
+  </nav>
+  <div class="tb__where"><span class="tb__dot" id="dot"></span><span id="section">Carregando</span></div>
+  <div class="tb__right">
+    <button type="button" class="tb__update" id="update" hidden>Atualização pronta · Reiniciar</button>
+  </div>
+<script src="titlebar.js"></script>
+</body>
+</html>
